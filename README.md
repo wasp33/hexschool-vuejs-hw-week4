@@ -1,6 +1,11 @@
 # hexschool-vuejs-hw-week4
 
-This template should help get you started developing with Vue 3 in Vite.
+## 需求功能描述
+
+- 請嘗試將「商品列表」、「購物車」、「通知」拆分成 3 個元件
+- 請使用 props 將商品資料傳遞至「商品列表」元件
+- 「購物車」元件的刪除功能，請使用 emit 傳遞事件
+- 使用 provide, inject 完成通知功能
 
 ## Recommended IDE Setup
 
