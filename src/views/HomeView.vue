@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import OnsellProduct from '@/components/OnsellProduct.vue'
 import ShoppingCart from '@/components/ShoppingCart.vue'
 import { toast } from 'vue3-toastify'
+import { provide } from 'vue'
 import 'vue3-toastify/dist/index.css'
 
 const products = ref([
@@ -34,21 +35,40 @@ const products = ref([
 const shopCarts = ref([])
 
 const addToCart = (product) => {
-  console.log('out =>', product)
-  showSuccessToast('加入購物車成功')
-  shopCarts.value.push(product)
+  // console.log('out =>', product)
+  // showSuccessToast('加入購物車成功')
+  const existingProduct = shopCarts.value.find(item => item.id === product.id)
+  if (existingProduct) {
+    existingProduct.quantity++
+    return
+  }else{
+    shopCarts.value.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+    })
+  }
 }
 const removeFromCart = (product) => {
-  console.log('移除購物車')
-  showSuccessToast('移除購物車成功')
+  // console.log('移除購物車')
+  // showSuccessToast('移除購物車成功')
   shopCarts.value = shopCarts.value.filter((item) => item.id !== product.id)
 }
 
-const showSuccessToast = (successMsg) => {
-  toast.success(successMsg, {
+const message = ref('Hello from parent!')
+// Provide a reactive value
+provide('messageKey', message)
+
+const showSuccessToast = (message) => {
+  toast.success(message, {
     position: 'top-right', // Optional: customize position
   })
 }
+
+provide('greetFunctionKey', showSuccessToast)
+
+
 </script>
 
 <template>
@@ -67,6 +87,7 @@ const showSuccessToast = (successMsg) => {
               :price="product.price"
               :image="product.image"
               :description="product.description"
+              :quantity="product.quantity"
               @emitAddToCart="addToCart"
             />
           </div>
